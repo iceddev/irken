@@ -1,0 +1,26 @@
+{
+  "name": "irken",
+  "version": "0.0.0",
+  "description": "Pluggable editor application base",
+  "main": "index.js",
+  "scripts": {
+    "test": "lab -cvL"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iceddev/irken"
+  },
+  "author": "Blaine Bublitz <blaine@iceddev.com> (http://iceddev.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/iceddev/irken/issues"
+  },
+  "homepage": "https://github.com/iceddev/irken",
+  "devDependencies": {
+    "code": "^1.3.0",
+    "lab": "^5.2.1"
+  },
+  "dependencies": {
+    "pak": "^0.1.0"
+  }
+}
