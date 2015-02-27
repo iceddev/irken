@@ -4,31 +4,41 @@ var util = require('util');
 var assert = require('assert');
 
 var Pak = require('pak');
-
-var mountpoints = [
-  'appbar',
-  'sidebar',
-  'editor',
-  'console'
-];
+var has = require('lodash/object/has');
+var domReady = require('domready');
 
 function Irken(){
   Pak.call(this);
 
-  this.mountpoints = mountpoints.reduce(function(result, mountpoint){
-    result[mountpoint] = [];
-    return result;
-  }, {});
+  this.layout = function(){};
+  this.mountpoints = {};
+  this.mountpointElements = {};
 }
 
 util.inherits(Irken, Pak);
 
 Irken.prototype.view = function view(mountpoint, fn){
-  var isValid = mountpoints.indexOf(mountpoint) !== -1;
+  var isValid = has(this.mountpoints, mountpoint);
 
-  assert(isValid, '`mountpoint` must be one of: ' + mountpoints.join(', '));
+  assert(isValid, '`mountpoint` must be one of: ' + Object.keys(this.mountpoints).join(', '));
 
   this.mountpoints[mountpoint].push(fn);
+};
+
+Irken.prototype.layout = function layout(fn){
+  this.layout = fn;
+};
+
+Irken.prototype.registerMountpoint = function registerMountpoint(mountpoint, element){
+  this.mountpointElements[mountpoint] = element;
+  this.mountpoints[mountpoint] = [];
+};
+
+Irken.prototype.render = function render(){
+  var layout = this.layout;
+  domReady(function(){
+    layout(document.body);
+  });
 };
 
 module.exports = Irken;

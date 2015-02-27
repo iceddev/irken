@@ -13,6 +13,8 @@ lab.experiment('Irken', function(){
 
   lab.beforeEach(function(done){
     app = new Irken();
+
+    app.registerMountpoint('sidebar', noop);
     done();
   });
 
