@@ -29,29 +29,35 @@ Irken.prototype.view = function view(mountpoint, fn){
   if(!this.mountpoints[mountpoint]){
     this.mountpoints[mountpoint] = [];
   }
-  this.mountpoints[mountpoint].push(viewLifecycle);
 
   function viewLifecycle(cb){
     return fn(elements[mountpoint], cb);
   }
+
+  this.mountpoints[mountpoint].push(viewLifecycle);
 };
 
 Irken.prototype.layout = function layout(fn){
-
-  this.lifecycle.layout = layoutLifecycle;
-
   function layoutLifecycle(cb){
     return fn(document.body, cb);
   }
+
+  this.lifecycle.layout = layoutLifecycle;
 };
 
-Irken.prototype.registerMountpoint = function registerMountpoint(mountpoint, element){
+Irken.prototype.addMountpoint = function addMountpoint(mountpoint, element){
   if(!this.mountpoints[mountpoint]){
     this.mountpoints[mountpoint] = [];
   }
+
   if(!this.mountpointElements[mountpoint]){
     this.mountpointElements[mountpoint] = element;
   }
+};
+
+Irken.prototype.removeMountpoint = function removeMountpoint(mountpoint){
+  delete this.mountpoints[mountpoint];
+  delete this.mountpointElements[mountpoint];
 };
 
 Irken.prototype.render = function render(cb){
