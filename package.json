@@ -23,6 +23,7 @@
   "dependencies": {
     "bach": "^0.4.1",
     "domready": "^1.0.7",
+    "immstruct": "^1.4.0",
     "lodash": "^3.3.1",
     "pak": "^0.1.0"
   }

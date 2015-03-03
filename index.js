@@ -8,6 +8,8 @@ var values = require('lodash/object/values');
 var flatten = require('lodash/array/flatten');
 var domReady = require('domready');
 
+var Workspace = require('./lib/workspace');
+
 function asyncNoop(cb){
   cb();
 }
@@ -18,6 +20,8 @@ function Irken(){
   this.lifecycle = {};
   this.mountpoints = {};
   this.mountpointElements = {};
+
+  this.workspace = new Workspace();
 
   this.layout(asyncNoop);
 }
