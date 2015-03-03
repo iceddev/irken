@@ -13,20 +13,14 @@ lab.experiment('Irken', function(){
 
   lab.beforeEach(function(done){
     app = new Irken();
-    done();
-  });
 
-  lab.test('#view throws on invalid mountpoint', function(done){
-    function invalidMountpoint(){
-      app.view('test', noop);
-    }
-    code.expect(invalidMountpoint).to.throw();
+    app.addMountpoint('sidebar', noop);
     done();
   });
 
   lab.test('#view adds function to valid mountpoint', function(done){
     app.view('sidebar', noop);
-    code.expect(app.mountpoints.sidebar).to.contain(noop);
+    code.expect(app.mountpoints.sidebar).to.have.length(1);
     done();
   });
 });
