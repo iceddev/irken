@@ -66,4 +66,19 @@ lab.experiment('Workspace', function(){
     });
   });
 
+  lab.test('#directory should be a list of files in a directory', function(done){
+    code.expect(space.directory.deref).to.be.a.function();
+    code.expect(space.directory.deref().size).to.equal(0);
+    done();
+  });
+
+  lab.test('#changeDir should adjust cwd and add files to directory structure', function(done){
+    space.changeDir('.tmp', function(err, files){
+      code.expect(err).to.not.exist();
+      code.expect(space.directory).to.equal(files);
+      code.expect(files.size).to.equal(1);
+      done(err);
+    });
+  });
+
 });
