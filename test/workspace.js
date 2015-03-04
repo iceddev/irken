@@ -55,6 +55,12 @@ lab.experiment('Workspace', function(){
     done();
   });
 
+  lab.test('#directory should default to an empty list', function(done){
+    code.expect(space.directory.deref).to.be.a.function();
+    code.expect(space.directory.size).to.equal(0);
+    done();
+  });
+
   lab.test('#saveFile will mkdirp and save a file', function(done){
     var newText = 'function helloWorld(hello){\n  foo = "bar";\n}';
 
@@ -122,12 +128,6 @@ lab.experiment('Workspace', function(){
       code.expect(contents).to.equal(space.current);
       done();
     });
-  });
-
-  lab.test('#directory should be a list of files in a directory', function(done){
-    code.expect(space.directory.deref).to.be.a.function();
-    code.expect(space.directory.deref().size).to.equal(0);
-    done();
   });
 
   lab.test('#changeDir should adjust cwd and add files to directory structure', function(done){
