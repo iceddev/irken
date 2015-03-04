@@ -14,6 +14,14 @@ function asyncNoop(cb){
   cb();
 }
 
+/**
+ * Creates a new Irken.  'irken, crank out'
+ * @property {object} lifecycle stores context-based functions.
+ * @property {object} mountpoints names of target DOM nodes.
+ * @property {object} mountpointElements target DOM nodes.
+ * @property {function} workspace returns user interactivity api.
+ * @property {function} layout renders mountpoints.
+ */
 function Irken(){
   Pak.call(this);
 
@@ -40,6 +48,12 @@ function Irken(){
 
 util.inherits(Irken, Pak);
 
+/**
+ * Registers and renders a mountpoint with callback.
+ * @param  {string}
+ * @param  {Function}
+ * @return {undefined}
+ */
 Irken.prototype.view = function view(mountpoint, fn){
   var elements = this.mountpointElements;
   if(!this.mountpoints[mountpoint]){
@@ -53,6 +67,11 @@ Irken.prototype.view = function view(mountpoint, fn){
   this.mountpoints[mountpoint].push(viewLifecycle);
 };
 
+/**
+ * Sets the layout render function at irken.lifecycle.layout
+ * @param  {Function}
+ * @return {undefined}
+ */
 Irken.prototype.layout = function layout(fn){
   function layoutLifecycle(cb){
     return fn(document.body, cb);
@@ -61,6 +80,11 @@ Irken.prototype.layout = function layout(fn){
   this.lifecycle.layout = layoutLifecycle;
 };
 
+/**
+ * Registers a mountpoint name and element type
+ * @param {string|cursor}
+ * @param {string|cursor}
+ */
 Irken.prototype.addMountpoint = function addMountpoint(mountpoint, element){
   if(!this.mountpoints[mountpoint]){
     this.mountpoints[mountpoint] = [];
@@ -71,11 +95,21 @@ Irken.prototype.addMountpoint = function addMountpoint(mountpoint, element){
   }
 };
 
+/**
+ * Removes a mountpoint from the irken object
+ * @param  {string|cursor}
+ * @return {undefined}
+ */
 Irken.prototype.removeMountpoint = function removeMountpoint(mountpoint){
   delete this.mountpoints[mountpoint];
   delete this.mountpointElements[mountpoint];
 };
 
+/**
+ * Render baby, yeah! Renders and mounts all the mountpoints to DOM
+ * @param  {Function}
+ * @return {undefined}
+ */
 Irken.prototype.render = function render(cb){
   this._renderCalled = true;
 
