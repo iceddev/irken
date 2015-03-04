@@ -17,6 +17,25 @@ lab.experiment('Workspace', function(){
     done();
   });
 
+  lab.test('#filename is a cursor for the current filename', function(done){
+    code.expect(space.filename.deref).to.be.a.function();
+    code.expect(space.filename.deref()).to.equal('');
+    done();
+  });
+
+  lab.test('#filename allows updating current filename through update', function(done){
+    var newFilename = 'test.js';
+
+    code.expect(space.filename.update).to.be.a.function();
+
+    space.filename.update(function(){
+      return newFilename;
+    });
+
+    code.expect(space.filename.deref()).to.equal(newFilename);
+    done();
+  });
+
   lab.test('#current is a cursor for current file', function(done){
     code.expect(space.current.deref).to.be.a.function();
     code.expect(space.current.deref()).to.equal('function helloWorld(hello){\n  hello = "world";\n}');
@@ -45,6 +64,45 @@ lab.experiment('Workspace', function(){
       code.expect(err).to.not.exist();
       code.expect(saved).to.equal(newText);
       done(err);
+    });
+  });
+
+  lab.test('#saveFile also handles cursors', function(done){
+    var newText = 'function helloWorld(hello){\n  my = "cursor";\n}';
+
+    space.current.update(function(){
+      return newText;
+    });
+
+    space.saveFile(tmpFilepath, space.current, function(err){
+      var saved = fs.readFileSync(tmpFilepath, 'utf8');
+
+      code.expect(err).to.not.exist();
+      code.expect(saved).to.equal(newText);
+      done(err);
+    });
+  });
+
+  lab.test('#saveFile adds the file to the directory listing', function(done){
+    var newText = 'function helloWorld(hello){\n  foo = "bar";\n}';
+
+    space.saveFile(tmpFilepath, newText, function(err){
+      code.expect(err).to.not.exist();
+      code.expect(space.directory.contains(tmpFilepath)).to.equal(true);
+      done(err);
+    });
+  });
+
+  lab.test('#saveFile does not add the file to the directory listing twice upon 2nd save', function(done){
+    var newText = 'function helloWorld(hello){\n  foo = "bar";\n}';
+
+    space.saveFile(tmpFilepath, newText, function(err){
+      code.expect(err).to.not.exist();
+      space.saveFile(tmpFilepath, newText, function(err2){
+        code.expect(err2).to.not.exist();
+        code.expect(space.directory.indexOf(tmpFilepath)).to.equal(space.directory.lastIndexOf(tmpFilepath));
+        done(err2);
+      });
     });
   });
 

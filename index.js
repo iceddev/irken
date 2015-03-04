@@ -17,13 +17,25 @@ function asyncNoop(cb){
 function Irken(){
   Pak.call(this);
 
+  var self = this;
+
   this.lifecycle = {};
   this.mountpoints = {};
   this.mountpointElements = {};
 
   this.workspace = new Workspace();
 
+  this._renderCalled = false;
+
   this.layout(asyncNoop);
+
+  // TODO: make workspace an EE?
+  this.workspace._structure.on('swap', function(){
+    // allow initial setup without render
+    if(self._renderCalled){
+      self.render();
+    }
+  });
 }
 
 util.inherits(Irken, Pak);
@@ -65,6 +77,8 @@ Irken.prototype.removeMountpoint = function removeMountpoint(mountpoint){
 };
 
 Irken.prototype.render = function render(cb){
+  this._renderCalled = true;
+
   var layout = this.lifecycle.layout;
   var mountpoints = bach.parallel(flatten(values(this.mountpoints)));
 
