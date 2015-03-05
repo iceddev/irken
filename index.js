@@ -16,11 +16,11 @@ function asyncNoop(cb){
 
 /**
  * Creates a new Irken.  'irken, crank out'
- * @property {object} lifecycle stores context-based functions.
- * @property {object} mountpoints names of target DOM nodes.
- * @property {object} mountpointElements target DOM nodes.
- * @property {function} workspace returns user interactivity api.
- * @property {function} layout renders mountpoints.
+ * @property {Object} lifecycle stores context-based functions.
+ * @property {Object} mountpoints names of target DOM nodes.
+ * @property {Object} mountpointElements target DOM nodes.
+ * @property {Function} workspace returns user interactivity api.
+ * @property {Function} layout renders mountpoints.
  */
 function Irken(){
   Pak.call(this);
@@ -50,7 +50,7 @@ util.inherits(Irken, Pak);
 
 /**
  * Registers and renders a mountpoint with callback.
- * @param  {string}
+ * @param  {string|Cursor}
  * @param  {Function}
  * @return {undefined}
  */
@@ -82,8 +82,8 @@ Irken.prototype.layout = function layout(fn){
 
 /**
  * Registers a mountpoint name and element type
- * @param {string|cursor}
- * @param {string|cursor}
+ * @param {string|Cursor}
+ * @param {string|Cursor}
  */
 Irken.prototype.addMountpoint = function addMountpoint(mountpoint, element){
   if(!this.mountpoints[mountpoint]){
@@ -97,7 +97,7 @@ Irken.prototype.addMountpoint = function addMountpoint(mountpoint, element){
 
 /**
  * Removes a mountpoint from the irken object
- * @param  {string|cursor}
+ * @param  {string|Cursor}
  * @return {undefined}
  */
 Irken.prototype.removeMountpoint = function removeMountpoint(mountpoint){
