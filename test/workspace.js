@@ -55,9 +55,22 @@ lab.experiment('Workspace', function(){
     done();
   });
 
+  lab.test('#cwd is a cursor for the current working directory', function(done){
+    // TODO: root differs between browser and node
+    code.expect(space.cwd.deref).to.be.a.function();
+    code.expect(space.cwd.deref()).to.equal('./');
+    done();
+  });
+
   lab.test('#directory should default to an empty list', function(done){
     code.expect(space.directory.deref).to.be.a.function();
     code.expect(space.directory.size).to.equal(0);
+    done();
+  });
+
+  lab.test('#projects should default to an empty list', function(done){
+    code.expect(space.projects.deref).to.be.a.function();
+    code.expect(space.projects.size).to.equal(0);
     done();
   });
 
@@ -135,6 +148,14 @@ lab.experiment('Workspace', function(){
       code.expect(err).to.not.exist();
       code.expect(space.directory).to.equal(files);
       code.expect(files.size).to.equal(1);
+      done(err);
+    });
+  });
+
+  lab.test('#changeDir should add projects from the root to the projects cursor', function(done){
+    space.changeDir('.tmp', function(err){
+      code.expect(err).to.not.exist();
+      code.expect(space.projects.contains('.tmp')).to.equal(true);
       done(err);
     });
   });
