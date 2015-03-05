@@ -3,11 +3,11 @@
 var lab = exports.lab = require('lab').script();
 var code = require('code');
 
-// var Irken = require('../');
+var Irken = require('../');
 
 function noop(){}
 
-lab.experiment.skip('Irken', function(){
+lab.experiment('Irken', function(){
 
   var app;
 
@@ -21,6 +21,28 @@ lab.experiment.skip('Irken', function(){
   lab.test('#view adds function to valid mountpoint', function(done){
     app.view('sidebar', noop);
     code.expect(app.mountpoints.sidebar).to.have.length(1);
+    done();
+  });
+
+  lab.test('#expose makes an object available', function(done){
+    var exposed = {};
+    app.expose('test', exposed);
+    code.expect(app.test).to.equal(exposed);
+    done();
+  });
+
+  lab.test('#expose makes a function available', function(done){
+    var exposed = noop;
+    app.expose('test', exposed);
+    code.expect(app.test).to.equal(exposed);
+    done();
+  });
+
+  lab.test('#expose does not allow overriding `constructor`', function(done){
+    function exists(){
+      app.expose('constructor', {});
+    }
+    code.expect(exists).to.throw();
     done();
   });
 });
