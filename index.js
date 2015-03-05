@@ -1,44 +1,36 @@
 'use strict';
 
 var util = require('util');
+var assert = require('assert');
 
 var Pak = require('pak');
 var bach = require('bach');
 var values = require('lodash/object/values');
 var flatten = require('lodash/array/flatten');
-var domReady = require('domready');
-
-var Workspace = require('./lib/workspace');
+var domReady = process.browser ? require('domready') : asyncNoop;
 
 function asyncNoop(cb){
-  cb();
+  process.nextTick(cb);
 }
 
 function Irken(){
   Pak.call(this);
 
-  var self = this;
-
   this.lifecycle = {};
   this.mountpoints = {};
   this.mountpointElements = {};
 
-  this.workspace = new Workspace();
-
   this._renderCalled = false;
 
   this.layout(asyncNoop);
-
-  // TODO: make workspace an EE?
-  this.workspace._structure.on('swap', function(){
-    // allow initial setup without render
-    if(self._renderCalled){
-      self.render();
-    }
-  });
 }
 
 util.inherits(Irken, Pak);
+
+Irken.prototype.expose = function expose(namespace, exposed){
+  assert(!this[namespace], namespace + ' is already defined');
+  this[namespace] = exposed;
+};
 
 Irken.prototype.view = function view(mountpoint, fn){
   var elements = this.mountpointElements;
