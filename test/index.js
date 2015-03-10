@@ -1,48 +1,47 @@
 'use strict';
 
-var lab = exports.lab = require('lab').script();
-var code = require('code');
+var expect = require('expect');
 
 var Irken = require('../');
 
 function noop(){}
 
-lab.experiment('Irken', function(){
+describe('Irken', function(){
 
   var app;
 
-  lab.beforeEach(function(done){
+  beforeEach(function(done){
     app = new Irken();
 
     app.addMountpoint('sidebar', noop);
     done();
   });
 
-  lab.test('#view adds function to valid mountpoint', function(done){
+  it('#view adds function to valid mountpoint', function(done){
     app.view('sidebar', noop);
-    code.expect(app.mountpoints.sidebar).to.have.length(1);
+    expect(app.mountpoints.sidebar.length).toEqual(1);
     done();
   });
 
-  lab.test('#expose makes an object available', function(done){
+  it('#expose makes an object available', function(done){
     var exposed = {};
     app.expose('test', exposed);
-    code.expect(app.test).to.equal(exposed);
+    expect(app.test).toEqual(exposed);
     done();
   });
 
-  lab.test('#expose makes a function available', function(done){
+  it('#expose makes a function available', function(done){
     var exposed = noop;
     app.expose('test', exposed);
-    code.expect(app.test).to.equal(exposed);
+    expect(app.test).toEqual(exposed);
     done();
   });
 
-  lab.test('#expose does not allow overriding `constructor`', function(done){
+  it('#expose does not allow overriding `constructor`', function(done){
     function exists(){
       app.expose('constructor', {});
     }
-    code.expect(exists).to.throw();
+    expect(exists).toThrow();
     done();
   });
 });
