@@ -4,7 +4,8 @@
   "description": "Pluggable editor application base",
   "main": "index.js",
   "scripts": {
-    "test": "lab -cvL"
+    "test": "zuul test/ --local --open",
+    "ci": "zuul test/ --phantom"
   },
   "repository": {
     "type": "git",
@@ -17,8 +18,10 @@
   },
   "homepage": "https://github.com/iceddev/irken",
   "devDependencies": {
-    "code": "^1.3.0",
-    "lab": "^5.2.1"
+    "expect": "^1.6.0",
+    "mocha": "^2.2.1",
+    "phantomjs": "git://github.com/phated/phantomjs",
+    "zuul": "^2.1.1"
   },
   "dependencies": {
     "bach": "^0.4.1",
