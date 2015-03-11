@@ -22,6 +22,14 @@ function Irken(){
 
   this._renderCalled = false;
 
+  var container = document.createElement('div');
+  container.style.width = '100%';
+  container.style.height = '100%';
+  container.style.margin = 0;
+  container.style.padding = 0;
+  document.body.insertBefore(container, document.body.firstChild);
+  this._container = container;
+
   this.layout(asyncNoop);
 }
 
@@ -46,8 +54,10 @@ Irken.prototype.view = function view(mountpoint, fn){
 };
 
 Irken.prototype.layout = function layout(fn){
+  var container = this._container;
+
   function layoutLifecycle(cb){
-    return fn(document.body, cb);
+    return fn(container, cb);
   }
 
   this.lifecycle.layout = layoutLifecycle;
