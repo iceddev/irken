@@ -12,12 +12,16 @@ describe('Irken', function(){
 
   beforeEach(function(done){
     app = new Irken();
+    done();
+  });
 
-    app.addMountpoint('sidebar', noop);
+  afterEach(function(done){
+    document.body.removeChild(app._container);
     done();
   });
 
   it('#view adds function to valid mountpoint', function(done){
+    app.addMountpoint('sidebar', noop);
     app.view('sidebar', noop);
     expect(app.mountpoints.sidebar.length).toEqual(1);
     done();
@@ -43,5 +47,12 @@ describe('Irken', function(){
     }
     expect(exists).toThrow();
     done();
+  });
+
+  it('does not need mountpoints to render', function(done){
+    app.render(function(err){
+      expect(err).toNotExist();
+      done();
+    });
   });
 });

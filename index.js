@@ -6,11 +6,16 @@ var assert = require('assert');
 var Pak = require('pak');
 var bach = require('bach');
 var values = require('lodash/object/values');
+var isEmpty = require('lodash/lang/isEmpty');
 var flatten = require('lodash/array/flatten');
 var domReady = require('dooomrdy');
 
 function asyncNoop(cb){
   process.nextTick(cb);
+}
+
+function layoutNoop(el, cb){
+  asyncNoop(cb);
 }
 
 function Irken(){
@@ -30,7 +35,7 @@ function Irken(){
   document.body.insertBefore(container, document.body.firstChild);
   this._container = container;
 
-  this.layout(asyncNoop);
+  this.layout(layoutNoop);
 }
 
 util.inherits(Irken, Pak);
@@ -82,7 +87,11 @@ Irken.prototype.render = function render(cb){
   this._renderCalled = true;
 
   var layout = this.lifecycle.layout;
-  var mountpoints = bach.parallel(flatten(values(this.mountpoints)));
+
+  var mountpoints = asyncNoop;
+  if(!isEmpty(this.mountpoints)){
+    mountpoints = bach.parallel(flatten(values(this.mountpoints)));
+  }
 
   var renderPipeline = bach.series(layout, mountpoints);
 
