@@ -7,7 +7,7 @@ var Pak = require('pak');
 var bach = require('bach');
 var values = require('lodash/object/values');
 var flatten = require('lodash/array/flatten');
-var domReady = process.browser ? require('domready') : asyncNoop;
+var domReady = require('dooomrdy');
 
 function asyncNoop(cb){
   process.nextTick(cb);
@@ -21,6 +21,14 @@ function Irken(){
   this.mountpointElements = {};
 
   this._renderCalled = false;
+
+  var container = document.createElement('div');
+  container.style.width = '100%';
+  container.style.height = '100%';
+  container.style.margin = 0;
+  container.style.padding = 0;
+  document.body.insertBefore(container, document.body.firstChild);
+  this._container = container;
 
   this.layout(asyncNoop);
 }
@@ -46,8 +54,10 @@ Irken.prototype.view = function view(mountpoint, fn){
 };
 
 Irken.prototype.layout = function layout(fn){
+  var container = this._container;
+
   function layoutLifecycle(cb){
-    return fn(document.body, cb);
+    return fn(container, cb);
   }
 
   this.lifecycle.layout = layoutLifecycle;
