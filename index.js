@@ -7,7 +7,7 @@ var Pak = require('pak');
 var bach = require('bach');
 var values = require('lodash/object/values');
 var flatten = require('lodash/array/flatten');
-var domReady = process.browser ? require('domready') : asyncNoop;
+var domReady = require('dooomrdy');
 
 function asyncNoop(cb){
   process.nextTick(cb);
