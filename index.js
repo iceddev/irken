@@ -7,6 +7,7 @@ var Pak = require('pak');
 var bach = require('bach');
 var values = require('lodash/object/values');
 var isEmpty = require('lodash/lang/isEmpty');
+var compact = require('lodash/array/compact');
 var flatten = require('lodash/array/flatten');
 var domReady = require('dooomrdy');
 
@@ -88,12 +89,16 @@ Irken.prototype.render = function render(cb){
 
   var layout = this.lifecycle.layout;
 
-  var mountpoints = asyncNoop;
+  var pipeline = [layout];
+
   if(!isEmpty(this.mountpoints)){
-    mountpoints = bach.parallel(flatten(values(this.mountpoints)));
+    var mountpointPipeline = compact(flatten(values(this.mountpoints)));
+    if(mountpointPipeline.length){
+      pipeline.concat(bach.parallel(mountpointPipeline));
+    }
   }
 
-  var renderPipeline = bach.series(layout, mountpoints);
+  var renderPipeline = bach.series(pipeline);
 
   domReady(function(){
     renderPipeline(cb);
