@@ -19,7 +19,19 @@ function layoutNoop(el, cb){
   asyncNoop(cb);
 }
 
-function Irken(){
+function generateContainer(){
+  var container = document.createElement('div');
+  container.style.width = '100%';
+  container.style.height = '100%';
+  container.style.margin = 0;
+  container.style.padding = 0;
+  document.body.insertBefore(container, document.body.firstChild);
+  return container;
+}
+
+function Irken(opts){
+  opts = opts || {};
+
   Pak.call(this);
 
   this.lifecycle = {};
@@ -28,13 +40,7 @@ function Irken(){
 
   this._renderCalled = false;
 
-  var container = document.createElement('div');
-  container.style.width = '100%';
-  container.style.height = '100%';
-  container.style.margin = 0;
-  container.style.padding = 0;
-  document.body.insertBefore(container, document.body.firstChild);
-  this._container = container;
+  this._container = opts.container || generateContainer();
 
   this.layout(layoutNoop);
 }

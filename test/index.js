@@ -10,15 +10,26 @@ describe('Irken', function(){
 
   var app;
   var el;
+  var container;
 
   beforeEach(function(done){
-    app = new Irken();
+    container = document.createElement('div');
+    app = new Irken({ container: container });
     el = document.createElement('div');
     done();
   });
 
   afterEach(function(done){
+    container = null;
+    app = null;
     el = null;
+    done();
+  });
+
+  it('generates a new container if not passed in options', function(done){
+    expect(app._container).toEqual(container);
+    app = new Irken();
+    expect(app._container).toNotEqual(container);
     document.body.removeChild(app._container);
     done();
   });
