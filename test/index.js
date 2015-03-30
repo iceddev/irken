@@ -69,10 +69,28 @@ describe('Irken', function(){
 
   it('does not need views registered on all mountpoints to render', function(done){
     app.addMountpoint('sidebar', el);
-    app.view('sidebar', noop);
+    app.view('sidebar', function(_, cb){
+      cb();
+    });
     app.addMountpoint('editor', el);
     app.render(function(err){
       expect(err).toNotExist();
+      done();
+    });
+  });
+
+  it('renders views at mountpoints', function(done){
+    var called = false;
+    app.addMountpoint('sidebar', el);
+    app.view('sidebar', function(mountEl, cb){
+      console.log('sidebar');
+      expect(mountEl).toBe(el);
+      called = true;
+      cb();
+    });
+    app.render(function(err){
+      expect(err).toNotExist();
+      expect(called).toEqual(true);
       done();
     });
   });

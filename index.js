@@ -94,7 +94,7 @@ Irken.prototype.render = function render(cb){
   if(!isEmpty(this.mountpoints)){
     var mountpointPipeline = compact(flatten(values(this.mountpoints)));
     if(mountpointPipeline.length){
-      pipeline.concat(bach.parallel(mountpointPipeline));
+      pipeline.push(bach.parallel(mountpointPipeline));
     }
   }
 
