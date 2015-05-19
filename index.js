@@ -36,6 +36,9 @@ function Irken(opts){
   this.mountpoints = {};
   this.mountpointElements = {};
 
+  //board manager init
+  this._boards = {};
+
   this._renderCalled = false;
 
   this._container = opts.container || generateContainer();
