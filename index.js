@@ -38,6 +38,7 @@ function Irken(opts){
 
   //board manager init
   this._boards = {};
+  this._devices = {};
 
   this._renderCalled = false;
 
