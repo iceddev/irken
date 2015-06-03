@@ -1,6 +1,6 @@
 {
   "name": "irken",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Pluggable editor application base",
   "main": "index.js",
   "scripts": {
