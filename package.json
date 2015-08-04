@@ -25,7 +25,6 @@
   },
   "dependencies": {
     "bach": "^0.4.1",
-    "browser-serialport": "^2.0.2",
     "dooomrdy": "0.0.1",
     "lodash": "^3.3.1",
     "pak": "^0.1.0",
