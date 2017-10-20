@@ -1,8 +1,7 @@
 sudo: false
 language: node_js
 node_js:
-  - '0.10'
-  - '0.12'
+  - '6'
 # https://mediocre.com/forum/topics/phantomjs-2-and-travis-ci-we-beat-our-heads-against-a-wall-so-you-dont-have-to
 # we alter PATH to use PWD first to avoid the use of sudo
 before_install:
